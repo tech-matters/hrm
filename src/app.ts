@@ -1,3 +1,4 @@
+import { SerializedResponse } from './types';
 const createError = require('http-errors');
 const express = require('express');
 require('express-async-errors');
@@ -10,9 +11,11 @@ const { apiV0 } = require('./routes');
 
 const app = express();
 const apiKey = process.env.API_KEY;
-const version = '0.3.6';
+const version = '1.0.0';
 
+console.log('-------------------------------');
 console.log(`Starting HRM version ${version}`);
+console.log('-------------------------------');
 
 swagger.runWhenNotProduction(app);
 
@@ -24,9 +27,12 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cors());
 
 app.get('/', (req, res) => {
-  res.json({
+  const response: SerializedResponse = {
     Message: 'Welcome to the HRM!',
-  });
+    Datetime: new Date(),
+  };
+
+  res.json(response);
 });
 
 app.options('/contacts', cors());
